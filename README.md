@@ -1,3 +1,7 @@
+运行：
+打开rqt_control.sh，在密码处设置自己密码
+设备连接完毕后，直接运行rqt_control.sh即可
+
 环境：
 $ cd ~
 $ sudo gedit .bashrc

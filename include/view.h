@@ -5,6 +5,8 @@
 #include <rqt_gui_cpp/plugin.h>
 #include <pluginlib/class_list_macros.h>
 #include <basketball_catchone_srv/CatchOneBall.h>
+#include <object_detect/volleyballdata.h>
+#include <object_detect/cylinderdata.h>
 #include <basketball_msgs/robot_message.h>
 #include <QMainWindow>
 #include <QCloseEvent>
@@ -25,12 +27,10 @@ protected:
     void closeEvent(QCloseEvent *);
 
 public slots:
-    //执行找球信息
+    //执行找篮球信息
     void findBall();
-    //找排球
-    void findVolleyball();
-    //找柱子
-    void findCylinder();
+    //找排球、柱子
+    void findVolleyBallAndCylinder();
     //找边线
     void findLine();
     //开始找球
@@ -47,18 +47,14 @@ public slots:
 //    void isRunning();
     //显示找篮球进程输出信息
     void showPCLPro();
-    //显示找排球进程输出信息
-    void showVollPro();
-    //显示找柱子进程输出信息
-    void showCylPro();
+    //显示找排球、柱子进程输出信息
+    void showVACPro();
     //显示找边线进程输出信息
     void showLinPro();
     //显示找篮球进程错误信息
     void showPCLProError();
-    //显示找排球进程错误信息
-    void showVollProError();
-    //显示找柱子进程错误信息
-    void showCylProError();
+    //显示找排球、柱子进程错误信息
+    void showVACProError();
     //显示找边线进程错误信息
     void showLinProError();
 
@@ -78,10 +74,8 @@ private:
     bool findBallClicked;
     //声明找篮球控制的子进程
     QProcess *pClPro;
-    //声明找排球的进程
-    QProcess *vollPro;
-    //声明找柱子的进程
-    QProcess *cylPro;
+    //声明找排球、柱子的进程
+    QProcess *VACPro;
     //声明找边线的进程
     QProcess *linPro;
 //    //声明显示进程信息的子进程
