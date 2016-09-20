@@ -28,9 +28,13 @@ $ sudo gedit qtcreator.desktop
 file(GLOB_RECURSE EXTRA_FILES */*)
 add_custom_target(${PROJECT_NAME}_OTHER_FILES ALL WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} SOURCES ${EXTRA_FILES})
 
+<<<<<<< Updated upstream
 注意：QTextBrowser的setText与append方法不能混用
 编译时多source devel/setup.bash
 CMakelist.txt文件一定要配好
 
+=======
+注意：QTextBrowser的setText与append方法不能混用 编译时多source devel/setup.bash CMakelist.txt文件一定要配好
+>>>>>>> Stashed changes
 
 # rqt_control

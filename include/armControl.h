@@ -9,8 +9,8 @@
 #include <basketball_msgs/basketball_shovel_srv.h>
 #include <basketball_msgs/basketball_shoot_srv.h>
 #include <basketball_msgs/robot_message.h>
-#include <QtGui>
 #include <QMainWindow>
+#include <QtGui>
 
 class armControl : public rqt_gui_cpp::Plugin
 {

@@ -29,6 +29,7 @@ set(rqt_control_SRCS
     src/armControl.cpp
     src/view.cpp
     src/status.cpp
+    src/thread_.cpp
     )
 
 set(rqt_control_HDRS
@@ -38,7 +39,7 @@ set(rqt_control_HDRS
     include/armControl.h
     include/view.h
     include/status.h
-
+    include/thread_.h
     ui/ui_mainwindow.h
 )
 
