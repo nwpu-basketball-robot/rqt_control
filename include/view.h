@@ -72,13 +72,17 @@ public slots:
     void showVACPro();
     //显示找边线进程输出信息
     void showLinPro();
+    //显示找柱子2进程输出信息
+    void showCydPro();
+
     //显示找篮球进程错误信息
     void showPCLProError();
     //显示找排球、柱子进程错误信息
     void showVACProError();
     //显示找边线进程错误信息
     void showLinProError();
-
+    //显示找柱子2进程错误信息
+    void showCydProError();
 private:
     Ui_MainWindow ui_rqtWidget ;
     //声明ros节点

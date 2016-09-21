@@ -42,10 +42,12 @@ void view::init()
     connect(pClPro,SIGNAL(readyReadStandardOutput()),this,SLOT(showPCLPro()));
     connect(VACPro,SIGNAL(readyReadStandardOutput()),this,SLOT(showVACPro()));
     connect(linPro,SIGNAL(readyReadStandardOutput()),this,SLOT(showLinPro()));
+    connect(CydPro,SIGNAL(readyReadStandardOutput()),this,SLOT(showCydPro()));
 
     connect(pClPro,SIGNAL(readyReadStandardError()),this,SLOT(showPCLProError()));
     connect(VACPro,SIGNAL(readyReadStandardError()),this,SLOT(showVACProError()));
     connect(linPro,SIGNAL(readyReadStandardError()),this,SLOT(showLinProError()));
+    connect(CydPro,SIGNAL(readyReadStandardError()),this,SLOT(showCydProError()));
 
     //点击startFindBasketBall，运行startFindBall()，打开图像，不运行算法
     connect(ui_rqtWidget.startFindBasketBall, SIGNAL(clicked(bool)), this, SLOT(startFindBall()));
@@ -312,6 +314,7 @@ void view::killPy(){
     pClPro->kill();
     VACPro->kill();
     linPro->kill();
+    CydPro->kill();
     //取消计时器与runFun()的联系
     disconnect(&timer,SIGNAL(timeout()), this, SLOT(runFun()));
     //关掉计时器
@@ -323,6 +326,9 @@ void view::killPy(){
     ui_rqtWidget.startVolleyBallAndCylinder -> setEnabled(true);
     //恢复startFindLine
     ui_rqtWidget.startFindLine -> setEnabled(true);
+    //恢复startCylinderFind
+    ui_rqtWidget.startCylinderFind -> setEnabled(true);
+
 
     //恢复runBasketBall
     ui_rqtWidget.runBasketBall -> setEnabled(true);
@@ -332,6 +338,8 @@ void view::killPy(){
     ui_rqtWidget.runCylinder -> setEnabled(true);
     //恢复runFindLine
     ui_rqtWidget.runFindLine -> setEnabled(true);
+    //恢复runCylinderFind
+    ui_rqtWidget.runCylinderFind -> setEnabled(true);
     //向控制台输出消息
     ROS_INFO("end Process!");
 }
@@ -358,6 +366,13 @@ void view::showLinPro(){
     return;
 }
 
+//显示找柱子2进程输出信息
+void view::showCydPro(){
+    QByteArray sc = CydPro -> readAllStandardOutput();
+    ui_rqtWidget.cylinderFind -> setText(sc);
+    return;
+}
+
 //显示找篮球进程错误信息
 void view::showPCLProError(){
     QByteArray spe = pClPro->readAllStandardError();
@@ -379,6 +394,13 @@ void view::showLinProError(){
     return;
 }
 
+//显示找柱子2进程错误信息
+void view::showCydProError(){
+    QByteArray sc = CydPro -> readAllStandardError();
+    ui_rqtWidget.cylinderFind -> setText(sc);
+    return;
+}
+
 //关闭窗口时杀掉所打开的进程
 void view::closeEvent(QCloseEvent *event)
 {
@@ -388,11 +410,13 @@ void view::closeEvent(QCloseEvent *event)
     pClPro->kill();
     VACPro->kill();
     linPro->kill();
+    CydPro->kill();
     //关闭计时器
     timer.stop();
     //删除计时器
     delete &timer;
-    if(!pClPro->waitForFinished(100) || !VACPro->waitForFinished(100) || !linPro->waitForFinished(100))
+    if(!pClPro->waitForFinished(100) || !VACPro->waitForFinished(100)
+            || !linPro->waitForFinished(100)||!CydPro->waitForFinished(100))
         return;
     event->accept();
 }
