@@ -1,5 +1,6 @@
 #ifndef STATUS_H
 #define STATUS_H
+#include "thread_.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMainWindow>
@@ -27,6 +28,8 @@ protected:
 public slots:
     //运行所选的状态
     void startStatus();
+    //创建守护进程
+    void createDeamon();
     //选择所要运行的状态
     void statusControl();
     //运行所选的状态

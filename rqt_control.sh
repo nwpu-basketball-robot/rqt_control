@@ -1,5 +1,5 @@
 #!/bin/bash 
-password="密码"
+password="123"
 
 function main()
 {

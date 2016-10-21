@@ -22,6 +22,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBox>
 #include <QtWidgets/QWidget>
 
@@ -68,7 +69,7 @@ public:
     QLineEdit *findLine;
     QLineEdit *volleyAndCylinder;
     QPushButton *startCylinderFind;
-    QLineEdit *textLine_2;
+    QLineEdit *textCylinderFind;
     QPushButton *runCylinderFind;
     QLineEdit *cylinderFind;
     QWidget *status;
@@ -84,8 +85,18 @@ public:
     QLineEdit *textMileageX;
     QLineEdit *textMileageY;
     QLineEdit *textMileageYaw;
+    QTextEdit *textEditMirror_2;
+    QWidget *mirror_status;
+    QPushButton *mirror_status5;
+    QPushButton *mirror_status2;
+    QPushButton *mirror_status1;
+    QPushButton *mirror_status4;
+    QPushButton *mirror_status3;
+    QPushButton *mirror_status6;
+    QFrame *statusLine_2;
+    QLabel *statusLable_2;
+    QTextEdit *textEditMirror;
     QPushButton *killStatus;
-    QPushButton *startStatus;
     QWidget *TEST;
     QWidget *SET;
     QWidget *lineing;
@@ -111,10 +122,10 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1050, 720);
+        MainWindow->resize(1380, 720);
         toolBox = new QToolBox(MainWindow);
         toolBox->setObjectName(QStringLiteral("toolBox"));
-        toolBox->setGeometry(QRect(50, 35, 940, 640));
+        toolBox->setGeometry(QRect(50, 30, 1280, 650));
         QPalette palette;
         QBrush brush(QColor(0, 0, 0, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -178,7 +189,7 @@ public:
         toolBox->setFont(font);
         SHOW = new QWidget();
         SHOW->setObjectName(QStringLiteral("SHOW"));
-        SHOW->setGeometry(QRect(0, 0, 940, 547));
+        SHOW->setGeometry(QRect(0, 0, 1280, 557));
         QFont font1;
         font1.setItalic(false);
         font1.setUnderline(false);
@@ -204,7 +215,7 @@ public:
         armControlLable->setFont(font2);
         shoot = new QPushButton(armControl);
         shoot->setObjectName(QStringLiteral("shoot"));
-        shoot->setGeometry(QRect(0, 130, 297, 27));
+        shoot->setGeometry(QRect(0, 130, 291, 31));
         armControlLine = new QFrame(armControl);
         armControlLine->setObjectName(QStringLiteral("armControlLine"));
         armControlLine->setGeometry(QRect(-10, 20, 297, 16));
@@ -221,7 +232,7 @@ public:
         downToUp->setGeometry(QRect(150, 70, 140, 27));
         keepToDown = new QPushButton(armControl);
         keepToDown->setObjectName(QStringLiteral("keepToDown"));
-        keepToDown->setGeometry(QRect(150, 100, 140, 27));
+        keepToDown->setGeometry(QRect(150, 100, 141, 27));
         textStatus = new QTextBrowser(armControl);
         textStatus->setObjectName(QStringLiteral("textStatus"));
         textStatus->setGeometry(QRect(0, 170, 291, 341));
@@ -240,7 +251,7 @@ public:
         textCheckOnX->setPalette(palette1);
         textCheckOnY = new QLineEdit(view);
         textCheckOnY->setObjectName(QStringLiteral("textCheckOnY"));
-        textCheckOnY->setGeometry(QRect(150, 138, 140, 27));
+        textCheckOnY->setGeometry(QRect(160, 138, 140, 27));
         QPalette palette2;
         palette2.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette2.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -248,7 +259,7 @@ public:
         textCheckOnY->setPalette(palette2);
         textCheckOnTheta = new QLineEdit(view);
         textCheckOnTheta->setObjectName(QStringLiteral("textCheckOnTheta"));
-        textCheckOnTheta->setGeometry(QRect(150, 168, 140, 27));
+        textCheckOnTheta->setGeometry(QRect(160, 168, 140, 27));
         QPalette palette3;
         palette3.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette3.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -283,13 +294,13 @@ public:
         textIsFind->setPalette(palette5);
         killFindBall = new QPushButton(view);
         killFindBall->setObjectName(QStringLiteral("killFindBall"));
-        killFindBall->setGeometry(QRect(0, 480, 291, 35));
+        killFindBall->setGeometry(QRect(0, 480, 301, 35));
         reset = new QPushButton(view);
         reset->setObjectName(QStringLiteral("reset"));
-        reset->setGeometry(QRect(150, 108, 140, 27));
+        reset->setGeometry(QRect(160, 108, 140, 27));
         runBasketBall = new QPushButton(view);
         runBasketBall->setObjectName(QStringLiteral("runBasketBall"));
-        runBasketBall->setGeometry(QRect(0, 78, 291, 27));
+        runBasketBall->setGeometry(QRect(0, 78, 301, 27));
         QFont font3;
         font3.setBold(false);
         font3.setWeight(50);
@@ -308,7 +319,7 @@ public:
         runFindLine->setFont(font3);
         basketball = new QLineEdit(view);
         basketball->setObjectName(QStringLiteral("basketball"));
-        basketball->setGeometry(QRect(160, 40, 130, 35));
+        basketball->setGeometry(QRect(160, 40, 141, 35));
         QPalette palette6;
         palette6.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette6.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -316,7 +327,7 @@ public:
         basketball->setPalette(palette6);
         textVolleyball = new QLineEdit(view);
         textVolleyball->setObjectName(QStringLiteral("textVolleyball"));
-        textVolleyball->setGeometry(QRect(119, 330, 171, 27));
+        textVolleyball->setGeometry(QRect(119, 330, 181, 27));
         QPalette palette7;
         palette7.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette7.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -324,7 +335,7 @@ public:
         textVolleyball->setPalette(palette7);
         textLine = new QLineEdit(view);
         textLine->setObjectName(QStringLiteral("textLine"));
-        textLine->setGeometry(QRect(119, 250, 171, 27));
+        textLine->setGeometry(QRect(119, 250, 181, 27));
         QPalette palette8;
         palette8.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette8.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -332,7 +343,7 @@ public:
         textLine->setPalette(palette8);
         textCylinder = new QLineEdit(view);
         textCylinder->setObjectName(QStringLiteral("textCylinder"));
-        textCylinder->setGeometry(QRect(119, 360, 171, 27));
+        textCylinder->setGeometry(QRect(119, 360, 181, 27));
         QPalette palette9;
         palette9.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette9.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -347,7 +358,7 @@ public:
         startFindLine->setGeometry(QRect(0, 210, 160, 35));
         findLine = new QLineEdit(view);
         findLine->setObjectName(QStringLiteral("findLine"));
-        findLine->setGeometry(QRect(160, 210, 130, 35));
+        findLine->setGeometry(QRect(160, 210, 141, 35));
         QPalette palette10;
         palette10.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette10.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -355,7 +366,7 @@ public:
         findLine->setPalette(palette10);
         volleyAndCylinder = new QLineEdit(view);
         volleyAndCylinder->setObjectName(QStringLiteral("volleyAndCylinder"));
-        volleyAndCylinder->setGeometry(QRect(160, 290, 130, 35));
+        volleyAndCylinder->setGeometry(QRect(160, 290, 141, 35));
         QPalette palette11;
         palette11.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette11.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -364,21 +375,21 @@ public:
         startCylinderFind = new QPushButton(view);
         startCylinderFind->setObjectName(QStringLiteral("startCylinderFind"));
         startCylinderFind->setGeometry(QRect(0, 400, 160, 35));
-        textLine_2 = new QLineEdit(view);
-        textLine_2->setObjectName(QStringLiteral("textLine_2"));
-        textLine_2->setGeometry(QRect(119, 440, 171, 27));
+        textCylinderFind = new QLineEdit(view);
+        textCylinderFind->setObjectName(QStringLiteral("textCylinderFind"));
+        textCylinderFind->setGeometry(QRect(119, 440, 181, 27));
         QPalette palette12;
         palette12.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette12.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
         palette12.setBrush(QPalette::Disabled, QPalette::ButtonText, brush);
-        textLine_2->setPalette(palette12);
+        textCylinderFind->setPalette(palette12);
         runCylinderFind = new QPushButton(view);
         runCylinderFind->setObjectName(QStringLiteral("runCylinderFind"));
         runCylinderFind->setGeometry(QRect(0, 440, 111, 27));
         runCylinderFind->setFont(font3);
         cylinderFind = new QLineEdit(view);
         cylinderFind->setObjectName(QStringLiteral("cylinderFind"));
-        cylinderFind->setGeometry(QRect(160, 400, 130, 35));
+        cylinderFind->setGeometry(QRect(160, 400, 141, 35));
         QPalette palette13;
         palette13.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette13.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -405,7 +416,7 @@ public:
         status5->setGeometry(QRect(0, 430, 297, 35));
         statusLine = new QFrame(status);
         statusLine->setObjectName(QStringLiteral("statusLine"));
-        statusLine->setGeometry(QRect(-10, 20, 297, 16));
+        statusLine->setGeometry(QRect(0, 20, 297, 16));
         statusLine->setFrameShape(QFrame::HLine);
         statusLine->setFrameShadow(QFrame::Sunken);
         status3 = new QPushButton(status);
@@ -416,13 +427,13 @@ public:
         status4->setGeometry(QRect(0, 380, 297, 35));
         clearMileage = new QPushButton(status);
         clearMileage->setObjectName(QStringLiteral("clearMileage"));
-        clearMileage->setGeometry(QRect(0, 100, 297, 35));
+        clearMileage->setGeometry(QRect(0, 40, 297, 35));
         status6 = new QPushButton(status);
         status6->setObjectName(QStringLiteral("status6"));
         status6->setGeometry(QRect(0, 480, 297, 35));
         textMileageX = new QLineEdit(status);
         textMileageX->setObjectName(QStringLiteral("textMileageX"));
-        textMileageX->setGeometry(QRect(0, 140, 140, 27));
+        textMileageX->setGeometry(QRect(0, 80, 140, 27));
         QPalette palette14;
         palette14.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette14.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -430,7 +441,7 @@ public:
         textMileageX->setPalette(palette14);
         textMileageY = new QLineEdit(status);
         textMileageY->setObjectName(QStringLiteral("textMileageY"));
-        textMileageY->setGeometry(QRect(150, 140, 140, 27));
+        textMileageY->setGeometry(QRect(140, 80, 151, 27));
         QPalette palette15;
         palette15.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette15.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
@@ -438,29 +449,63 @@ public:
         textMileageY->setPalette(palette15);
         textMileageYaw = new QLineEdit(status);
         textMileageYaw->setObjectName(QStringLiteral("textMileageYaw"));
-        textMileageYaw->setGeometry(QRect(0, 170, 297, 27));
+        textMileageYaw->setGeometry(QRect(0, 110, 297, 27));
         QPalette palette16;
         palette16.setBrush(QPalette::Active, QPalette::ButtonText, brush);
         palette16.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
         palette16.setBrush(QPalette::Disabled, QPalette::ButtonText, brush);
         textMileageYaw->setPalette(palette16);
-        killStatus = new QPushButton(status);
-        killStatus->setObjectName(QStringLiteral("killStatus"));
-        killStatus->setGeometry(QRect(150, 40, 140, 35));
-        startStatus = new QPushButton(status);
-        startStatus->setObjectName(QStringLiteral("startStatus"));
-        startStatus->setGeometry(QRect(0, 40, 140, 35));
+        textEditMirror_2 = new QTextEdit(status);
+        textEditMirror_2->setObjectName(QStringLiteral("textEditMirror_2"));
+        textEditMirror_2->setGeometry(QRect(30, 150, 251, 51));
 
         horizontalLayout->addWidget(status);
+
+        mirror_status = new QWidget(SHOW);
+        mirror_status->setObjectName(QStringLiteral("mirror_status"));
+        mirror_status5 = new QPushButton(mirror_status);
+        mirror_status5->setObjectName(QStringLiteral("mirror_status5"));
+        mirror_status5->setGeometry(QRect(0, 370, 297, 35));
+        mirror_status2 = new QPushButton(mirror_status);
+        mirror_status2->setObjectName(QStringLiteral("mirror_status2"));
+        mirror_status2->setGeometry(QRect(0, 200, 297, 35));
+        mirror_status1 = new QPushButton(mirror_status);
+        mirror_status1->setObjectName(QStringLiteral("mirror_status1"));
+        mirror_status1->setGeometry(QRect(0, 150, 297, 35));
+        mirror_status4 = new QPushButton(mirror_status);
+        mirror_status4->setObjectName(QStringLiteral("mirror_status4"));
+        mirror_status4->setGeometry(QRect(0, 320, 297, 35));
+        mirror_status3 = new QPushButton(mirror_status);
+        mirror_status3->setObjectName(QStringLiteral("mirror_status3"));
+        mirror_status3->setGeometry(QRect(0, 250, 297, 35));
+        mirror_status6 = new QPushButton(mirror_status);
+        mirror_status6->setObjectName(QStringLiteral("mirror_status6"));
+        mirror_status6->setGeometry(QRect(0, 420, 297, 35));
+        statusLine_2 = new QFrame(mirror_status);
+        statusLine_2->setObjectName(QStringLiteral("statusLine_2"));
+        statusLine_2->setGeometry(QRect(0, 20, 297, 16));
+        statusLine_2->setFrameShape(QFrame::HLine);
+        statusLine_2->setFrameShadow(QFrame::Sunken);
+        statusLable_2 = new QLabel(mirror_status);
+        statusLable_2->setObjectName(QStringLiteral("statusLable_2"));
+        statusLable_2->setGeometry(QRect(100, 5, 101, 20));
+        textEditMirror = new QTextEdit(mirror_status);
+        textEditMirror->setObjectName(QStringLiteral("textEditMirror"));
+        textEditMirror->setGeometry(QRect(30, 60, 251, 51));
+        killStatus = new QPushButton(mirror_status);
+        killStatus->setObjectName(QStringLiteral("killStatus"));
+        killStatus->setGeometry(QRect(0, 480, 297, 35));
+
+        horizontalLayout->addWidget(mirror_status);
 
         toolBox->addItem(SHOW, QStringLiteral("SHOW"));
         TEST = new QWidget();
         TEST->setObjectName(QStringLiteral("TEST"));
-        TEST->setGeometry(QRect(0, 0, 940, 547));
+        TEST->setGeometry(QRect(0, 0, 1280, 557));
         toolBox->addItem(TEST, QStringLiteral("TEST"));
         SET = new QWidget();
         SET->setObjectName(QStringLiteral("SET"));
-        SET->setGeometry(QRect(0, 0, 940, 547));
+        SET->setGeometry(QRect(0, 0, 1280, 557));
         lineing = new QWidget(SET);
         lineing->setObjectName(QStringLiteral("lineing"));
         lineing->setGeometry(QRect(0, 0, 238, 259));
@@ -590,7 +635,7 @@ public:
         findLine->setPlaceholderText(QApplication::translate("MainWindow", "findLine:", 0));
         volleyAndCylinder->setPlaceholderText(QApplication::translate("MainWindow", "volley,cylinder:", 0));
         startCylinderFind->setText(QApplication::translate("MainWindow", "startCylinderFind", 0));
-        textLine_2->setPlaceholderText(QApplication::translate("MainWindow", "cylinderFind:", 0));
+        textCylinderFind->setPlaceholderText(QApplication::translate("MainWindow", "cylinderFind:", 0));
         runCylinderFind->setText(QApplication::translate("MainWindow", "runCylinderFind", 0));
         cylinderFind->setText(QString());
         cylinderFind->setPlaceholderText(QApplication::translate("MainWindow", "cylinderFind:", 0));
@@ -605,8 +650,24 @@ public:
         textMileageX->setPlaceholderText(QApplication::translate("MainWindow", "x:", 0));
         textMileageY->setPlaceholderText(QApplication::translate("MainWindow", "z:", 0));
         textMileageYaw->setPlaceholderText(QApplication::translate("MainWindow", "yaw:", 0));
+        textEditMirror_2->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt;\">\347\257\256\347\255\220\345\234\250\346\234\272\345\231\250</span><span style=\" font-size:20pt; text-decoration: underline; color:#ff0000;\">\345\217\263</span><span style=\" font-size:20pt;\">\346\211\213\350\276\271</span></p></body></html>", 0));
+        mirror_status5->setText(QApplication::translate("MainWindow", "mirror_\346\212\225\347\220\2032", 0));
+        mirror_status2->setText(QApplication::translate("MainWindow", "mirror_\344\274\240\347\220\2032", 0));
+        mirror_status1->setText(QApplication::translate("MainWindow", "mirror_\344\274\240\347\220\2031", 0));
+        mirror_status4->setText(QApplication::translate("MainWindow", "mirror_\346\212\225\347\220\2031", 0));
+        mirror_status3->setText(QApplication::translate("MainWindow", "mirror_\344\274\240\347\220\2033", 0));
+        mirror_status6->setText(QApplication::translate("MainWindow", "mirror_\346\212\225\347\220\2033", 0));
+        statusLable_2->setText(QApplication::translate("MainWindow", "mirror_status", 0));
+        textEditMirror->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt;\">\347\257\256\347\255\220\345\234\250\346\234\272\345\231\250</span><span style=\" font-size:20pt; text-decoration: underline; color:#ff00ff;\">\345\267\246</span><span style=\" font-size:20pt;\">\346\211\213\350\276\271</span></p></body></html>", 0));
         killStatus->setText(QApplication::translate("MainWindow", "killStatus", 0));
-        startStatus->setText(QApplication::translate("MainWindow", "startStatus", 0));
         toolBox->setItemText(toolBox->indexOf(SHOW), QApplication::translate("MainWindow", "SHOW", 0));
         toolBox->setItemText(toolBox->indexOf(TEST), QApplication::translate("MainWindow", "TEST", 0));
         lineingLable->setText(QApplication::translate("MainWindow", "lineing", 0));

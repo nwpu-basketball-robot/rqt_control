@@ -1,5 +1,5 @@
 #include "view.h"
-
+#include <QDebug>
 //构造函数
 view::view(QObject *parent, Ui_MainWindow &ui):
     ui_rqtWidget(ui)
@@ -14,10 +14,21 @@ view::view(QObject *parent, Ui_MainWindow &ui):
     CydPro = new QProcess;
     //初始化
     init();
+
 }
 //初始化函数
 void view::init()
 {
+    //失效runBasketBall
+    ui_rqtWidget.runBasketBall -> setEnabled(false);
+    //失效runVolleyBall
+    ui_rqtWidget.runVolleyBall -> setEnabled(false);
+    //失效runCylinder
+    ui_rqtWidget.runCylinder -> setEnabled(false);
+    //失效runFindLine
+    ui_rqtWidget.runFindLine -> setEnabled(false);
+    //失效runCylinderFind
+    ui_rqtWidget.runCylinderFind -> setEnabled(false);
     //实例化请求找篮球数据
     findBallClient = nh.serviceClient<basketball_catchone_srv::CatchOneBall>("/oneball_data");
     //实例化请求找排球服务
@@ -31,14 +42,14 @@ void view::init()
 
     //可点击startFindBall
     findBallClicked = true;
-//    //初始化显示运行的进程的进程
-//    ps = new QProcess;
+    //    //初始化显示运行的进程的进程
+    //    ps = new QProcess;
     //设置计时器间隔时间0.5秒
     timer.setInterval(500);
     //计时器开始后运行runFun()
     connect(&timer,SIGNAL(timeout()), this, SLOT(runFun()));
-//    //运行"ps"后，显示控制台输出信息，运行findBall(）
-//    connect(ps,SIGNAL(readyReadStandardOutput()),this,SLOT(isRunning()));
+    //    //运行"ps"后，显示控制台输出信息，运行findBall(）
+    //    connect(ps,SIGNAL(readyReadStandardOutput()),this,SLOT(isRunning()));
     connect(pClPro,SIGNAL(readyReadStandardOutput()),this,SLOT(showPCLPro()));
     connect(VACPro,SIGNAL(readyReadStandardOutput()),this,SLOT(showVACPro()));
     connect(linPro,SIGNAL(readyReadStandardOutput()),this,SLOT(showLinPro()));
@@ -69,7 +80,7 @@ void view::init()
     connect(ui_rqtWidget.runFindLine, SIGNAL(clicked(bool)), this, SLOT(selectFun()));
 
     //关联startCylinderFind与startCylinderFind()，开启找柱子角度服务
-    connect(ui_rqtWidget.startCylinderFind, SIGNAL(clicked()),this, SLOT(selectFun()));
+    connect(ui_rqtWidget.startCylinderFind, SIGNAL(clicked()),this, SLOT(startCylinderFind()));
     //点击runCylinderFind，运行selectFun()，运行找柱子角度函数
     connect(ui_rqtWidget.runCylinderFind,SIGNAL(clicked()),this,SLOT(selectFun()));
 
@@ -79,71 +90,91 @@ void view::init()
 
 //start findBall，开始运行找篮球图像，并开始计时器
 void view::startFindBall(){
-    //判断是否点过startFindBall
-    if(findBallClicked){
-        //运行开启图像进程
-        pClPro -> start("rosrun basketball_catchone_srv findBall");
-        //确认已点过startFindBall
-        findBallClicked = false;
-        //开始计时器
-        timer.start();
-        //输出信息
-        ROS_INFO("start findBall");
-    }else{
+    //运行开启图像进程
+    pClPro -> start("rosrun basketball_catchone_srv findBall");
+    while(pClPro->waitForStarted()){
         //若点击过,则使startsFindBall失效
         ui_rqtWidget.startFindBasketBall -> setEnabled(false);
+        ui_rqtWidget.runBasketBall -> setEnabled(true);
+        //开始计时器
+        if(!(timer.isActive())){
+            timer.start();
+        }
+        //输出信息
+        ui_rqtWidget.textStatus->append("start findBall");
+        ROS_INFO("start findBall");
+        return;
     }
+    //输出信息
+    ui_rqtWidget.textStatus->append("Failed findBall");
+    ROS_INFO("Failed findBall");
+    return;
 }
 
 //开始找排球、柱子
 void view::startFindVolleyBallAndCylinder(){
     // 开启找排球、柱子进程
     VACPro->start("rosrun object_detect findobject");
-    ui_rqtWidget.startVolleyBallAndCylinder -> setEnabled(false);
+    while(VACPro->waitForStarted()){
+        ui_rqtWidget.startVolleyBallAndCylinder -> setEnabled(false);
+        ui_rqtWidget.runCylinder -> setEnabled(true);
+        ui_rqtWidget.runVolleyBall -> setEnabled(true);
+        //开始计时器
+        if(!(timer.isActive())){
+            timer.start();
+        }
+        //输出信息
+        ui_rqtWidget.textStatus->append("start startFindVolleyBallAndCylinder");
+        ROS_INFO("start startFindVolleyBallAndCylinder");
+        return;
+    }
+    //输出信息
+    ui_rqtWidget.textStatus->append("Failed startFindVolleyBallAndCylinder ");
+    ROS_INFO("Failed startFindVolleyBallAndCylinder");
+    return;
 }
 
 //开始找边线
 void view::startFindLine(){
     //开启找边线进程
     linPro->start("rosrun lineing findline");
-    ui_rqtWidget.startFindLine -> setEnabled(false);
+    while(linPro->waitForStarted()){
+        ui_rqtWidget.startFindLine -> setEnabled(false);
+        ui_rqtWidget.runFindLine -> setEnabled(true);
+        //开始计时器
+        if(!(timer.isActive())){
+            timer.start();
+        }
+        //输出信息
+        ui_rqtWidget.textStatus->append("start startFindLine");
+        ROS_INFO("start startFindLine");
+        return;
+    }
+    //输出信息
+    ui_rqtWidget.textStatus->append("Failed startFindLine");
+    ROS_INFO("Failed startFindLine");
+    return;
 }
 
 //开始运行找柱子角度
 void view::startCylinderFind(){
     //开启找柱子角度进程
     CydPro -> start("rosrun cylinder_find cylinder_find");
-    ui_rqtWidget.startCylinderFind -> setEnabled(false);
-}
-
-//执行所选状态
-void view::runFun(){
-//    //查找后台进程
-//    showPID();
-//    //通过查找后台判断图像是否在运行
-//    //显示图像运行信息
-//    ui_rqtWidget.basketball -> setText("Break! ! !");
-
-    //判断是否点击runBasketBall,运行找篮球函数
-    if(!ui_rqtWidget.runBasketBall -> isEnabled()){
-        runBasketBall();
+    while(CydPro->waitForStarted()){
+        ui_rqtWidget.startCylinderFind -> setEnabled(false);
+        ui_rqtWidget.runCylinderFind -> setEnabled(true);
+        //开始计时器
+        if(!(timer.isActive())){
+            timer.start();
+        }
+        //输出信息
+        ui_rqtWidget.textStatus->append("start startCylinderFind");
+        ROS_INFO("start startCylinderFind");
+        return;
     }
-    //判断是否点击过runVolleyBall，运行找排球函数
-    if(!ui_rqtWidget.runVolleyBall -> isEnabled()){
-        runVolleyBall();
-    }
-    //判断是否点击过runCylider，运行找柱子函数
-    if(!ui_rqtWidget.runCylinder -> isEnabled()){
-        runCylinder();
-    }
-    //判断是否点击过runFindLine，运行找边线函数
-    if(!ui_rqtWidget.runFindLine -> isEnabled()){
-        runFindLine();
-    }
-    //判断是否点击过runCylinderFind，运行找柱子2函数
-    if(!ui_rqtWidget.runCylinderFind -> isEnabled()){
-        runCylinderFind();
-    }
+    //输出信息
+    ui_rqtWidget.textStatus->append("Failed startCylinderFind");
+    ROS_INFO("Failed startCylinderFind");
     return;
 }
 
@@ -155,22 +186,53 @@ void view::selectFun(){
         //使runBasketBall失效
         ui_rqtWidget.runBasketBall->setEnabled(false);
         return;
-    //找排球
+        //找排球
     }else if(btn -> objectName() == "runVolleyBall"){
         ui_rqtWidget.runVolleyBall -> setEnabled(false);
         return;
-    //找柱子
+        //找柱子
     }else if(btn -> objectName() == "runCylinder"){
         ui_rqtWidget.runCylinder -> setEnabled(false);
         return;
-    //找边线
+        //找边线
     }else if(btn -> objectName() == "runFindLine"){
         ui_rqtWidget.runFindLine -> setEnabled(false);
         return;
-    //找柱子2
-    }else if(btn -> objectName() == "startCylinderFind"){
+        //找柱子2
+    }else if(btn -> objectName() == "runCylinderFind"){
         ui_rqtWidget.runCylinderFind -> setEnabled(false);
     }
+}
+
+//执行所选状态
+void view::runFun(){
+    //    //查找后台进程
+    //    showPID();
+    //    //通过查找后台判断图像是否在运行
+    //    //显示图像运行信息
+    //    ui_rqtWidget.basketball -> setText("Break! ! !");
+
+    //判断是否点击runBasketBall,运行找篮球函数
+    if((!(ui_rqtWidget.runBasketBall -> isEnabled()))&&(!(ui_rqtWidget.startFindBasketBall -> isEnabled()))){
+        runBasketBall();
+    }
+    //判断是否点击过runVolleyBall，运行找排球函数
+    if((!(ui_rqtWidget.runVolleyBall -> isEnabled()))&&(!(ui_rqtWidget.startVolleyBallAndCylinder->isEnabled()))){
+        runVolleyBall();
+    }
+    //判断是否点击过runCylider，运行找柱子函数
+    if((!(ui_rqtWidget.runCylinder -> isEnabled()))&&(!(ui_rqtWidget.startVolleyBallAndCylinder->isEnabled()))){
+        runCylinder();
+    }
+    //判断是否点击过runFindLine，运行找边线函数
+    if((!(ui_rqtWidget.runFindLine -> isEnabled()))&&(!(ui_rqtWidget.startFindLine->isEnabled()))){
+        runFindLine();
+    }
+    //判断是否点击过runCylinderFind，运行找柱子2函数
+    if((!(ui_rqtWidget.runCylinderFind -> isEnabled()))&&(!(ui_rqtWidget.startCylinderFind->isEnabled()))){
+        runCylinderFind();
+    }
+    return;
 }
 
 //找篮球函数
@@ -282,72 +344,102 @@ void view::runCylinderFind(){
 //重置图像服务到打开图像状态
 void view::reset(){
     //判断是否点击过startFindBall
-    if(!findBallClicked){
-        //若点击过
-        findBallClicked = true;
+    if(!(ui_rqtWidget.startFindBasketBall -> isEnabled())){
         //关掉图像进程
         pClPro->kill();
-        //重启计时器
-        if(!timer.isActive()){
-            timer.start();
-        }else{
-            //取消计时器与runFun()的联系
-            disconnect(&timer,SIGNAL(timeout()), this, SLOT(runFun()));
-        }
-        //重新将计时器与runFun()函数联系
-        connect(&timer,SIGNAL(timeout()), this, SLOT(runFun()));
         //恢复runBasketBall
         ui_rqtWidget.runBasketBall->setEnabled(true);
         //打开图像
         startFindBall();
+        //输出信息
+        ui_rqtWidget.textStatus->append("reset success!");
         //向控制台输出信息
         ROS_INFO("reset success!");
+    }else{
+        //输出信息
+        ui_rqtWidget.textStatus->append("reset fail!");
+        //向控制台输出信息
+        ROS_INFO("reset fail!");
     }
 }
 
 //kill py status
 //关掉图像进程
 void view::killPy(){
-    //恢复按钮
-    findBallClicked = true;
     //关掉图像
     pClPro->kill();
     VACPro->kill();
     linPro->kill();
     CydPro->kill();
-    //取消计时器与runFun()的联系
-    disconnect(&timer,SIGNAL(timeout()), this, SLOT(runFun()));
-    //关掉计时器
-    timer.stop();
+    while(pClPro->waitForFinished()
+          ||VACPro->waitForFinished()
+          ||linPro->waitForFinished()
+          ||CydPro->waitForFinished()){
+        //取消计时器与runFun()的联系
+        disconnect(&timer,SIGNAL(timeout()), this, SLOT(runFun()));
+        //关掉计时器
+        timer.stop();
 
-    //恢复startFindBall
-    ui_rqtWidget.startFindBasketBall -> setEnabled(true);
-    //恢复startVolleyBallAndCylinder
-    ui_rqtWidget.startVolleyBallAndCylinder -> setEnabled(true);
-    //恢复startFindLine
-    ui_rqtWidget.startFindLine -> setEnabled(true);
-    //恢复startCylinderFind
-    ui_rqtWidget.startCylinderFind -> setEnabled(true);
+        //恢复startFindBall
+        ui_rqtWidget.startFindBasketBall -> setEnabled(true);
+        //恢复startVolleyBallAndCylinder
+        ui_rqtWidget.startVolleyBallAndCylinder -> setEnabled(true);
+        //恢复startFindLine
+        ui_rqtWidget.startFindLine -> setEnabled(true);
+        //恢复startCylinderFind
+        ui_rqtWidget.startCylinderFind -> setEnabled(true);
 
 
-    //恢复runBasketBall
-    ui_rqtWidget.runBasketBall -> setEnabled(true);
-    //恢复runVolleyBall
-    ui_rqtWidget.runVolleyBall -> setEnabled(true);
-    //恢复runCylinder
-    ui_rqtWidget.runCylinder -> setEnabled(true);
-    //恢复runFindLine
-    ui_rqtWidget.runFindLine -> setEnabled(true);
-    //恢复runCylinderFind
-    ui_rqtWidget.runCylinderFind -> setEnabled(true);
+        //恢复runBasketBall
+        ui_rqtWidget.runBasketBall -> setEnabled(false);
+        //恢复runVolleyBall
+        ui_rqtWidget.runVolleyBall -> setEnabled(false);
+        //恢复runCylinder
+        ui_rqtWidget.runCylinder -> setEnabled(false);
+        //恢复runFindLine
+        ui_rqtWidget.runFindLine -> setEnabled(false);
+        //恢复runCylinderFind
+        ui_rqtWidget.runCylinderFind -> setEnabled(false);
+        //向控制台输出消息
+        ROS_INFO("end Process!");
+        //输出信息
+        ui_rqtWidget.textStatus->append("end Process!");
+        return;
+    }
+    if(!pClPro->isOpen()||!VACPro->isOpen()||!linPro->isOpen()||!CydPro->isOpen()){
+        //恢复startFindBall
+        ui_rqtWidget.startFindBasketBall -> setEnabled(true);
+        //恢复startVolleyBallAndCylinder
+        ui_rqtWidget.startVolleyBallAndCylinder -> setEnabled(true);
+        //恢复startFindLine
+        ui_rqtWidget.startFindLine -> setEnabled(true);
+        //恢复startCylinderFind
+        ui_rqtWidget.startCylinderFind -> setEnabled(true);
+
+
+        //恢复runBasketBall
+        ui_rqtWidget.runBasketBall -> setEnabled(false);
+        //恢复runVolleyBall
+        ui_rqtWidget.runVolleyBall -> setEnabled(false);
+        //恢复runCylinder
+        ui_rqtWidget.runCylinder -> setEnabled(false);
+        //恢复runFindLine
+        ui_rqtWidget.runFindLine -> setEnabled(false);
+        //恢复runCylinderFind
+        ui_rqtWidget.runCylinderFind -> setEnabled(false);
+    }
     //向控制台输出消息
-    ROS_INFO("end Process!");
+    ROS_INFO("Failed end Process!");
+    //输出信息
+    ui_rqtWidget.textStatus->append("Failed end Process!");
+    return;
 }
 
 //显示找篮球进程输出信息
 void view::showPCLPro(){
     QByteArray sp = pClPro->readAllStandardOutput();
     ui_rqtWidget.basketball-> setText(sp);
+    //    ROS_INFO(sp.data());
     return;
 }
 
@@ -355,6 +447,7 @@ void view::showPCLPro(){
 void view::showVACPro(){
     QByteArray sv = VACPro -> readAllStandardOutput();
     ui_rqtWidget.volleyAndCylinder -> setText(sv);
+    //    ROS_INFO(sv.data());
     return;
 }
 
@@ -363,6 +456,7 @@ void view::showVACPro(){
 void view::showLinPro(){
     QByteArray sl = linPro -> readAllStandardOutput();
     ui_rqtWidget.findLine -> setText(sl);
+    //    ROS_INFO(sl.data());
     return;
 }
 
@@ -370,6 +464,7 @@ void view::showLinPro(){
 void view::showCydPro(){
     QByteArray sc = CydPro -> readAllStandardOutput();
     ui_rqtWidget.cylinderFind -> setText(sc);
+    //    ROS_INFO(sc.data());
     return;
 }
 
@@ -377,6 +472,7 @@ void view::showCydPro(){
 void view::showPCLProError(){
     QByteArray spe = pClPro->readAllStandardError();
     ui_rqtWidget.basketball-> setText(spe);
+    //    ROS_INFO(spe.data());
     return;
 }
 
@@ -384,6 +480,7 @@ void view::showPCLProError(){
 void view::showVACProError(){
     QByteArray sve = VACPro -> readAllStandardError();
     ui_rqtWidget.volleyAndCylinder -> setText(sve);
+    //    ROS_INFO(sve.data());
     return;
 }
 
@@ -391,13 +488,16 @@ void view::showVACProError(){
 void view::showLinProError(){
     QByteArray sle = linPro -> readAllStandardError();
     ui_rqtWidget.findLine -> setText(sle);
+    //    ROS_INFO(sle.data());
     return;
 }
+
 
 //显示找柱子2进程错误信息
 void view::showCydProError(){
     QByteArray sc = CydPro -> readAllStandardError();
     ui_rqtWidget.cylinderFind -> setText(sc);
+    //    ROS_INFO(sc.data());
     return;
 }
 
@@ -406,7 +506,7 @@ void view::closeEvent(QCloseEvent *event)
 {
     //关闭图像进程
     pClPro->kill();
-//    ps ->kill();
+    //    ps ->kill();
     pClPro->kill();
     VACPro->kill();
     linPro->kill();
@@ -415,6 +515,10 @@ void view::closeEvent(QCloseEvent *event)
     timer.stop();
     //删除计时器
     delete &timer;
+    delete pClPro;
+    delete VACPro;
+    delete linPro;
+    delete CydPro;
     if(!pClPro->waitForFinished(100) || !VACPro->waitForFinished(100)
             || !linPro->waitForFinished(100)||!CydPro->waitForFinished(100))
         return;

@@ -71,6 +71,7 @@ void armControl::shovelControl(){
         name = "5-keepToDown: ";
         shovelMove(5, name);
     }
+    return;
 }
 
 //shovel move
@@ -89,6 +90,7 @@ void armControl::shovelMove(int order, QString name){
 	QString message = QString::number(srv.response.is_successed,10);
     //显示到界面
     ui_rqtWidget.textStatus->append(name + message);
+    return;
 }
 
 //shoot ball
@@ -104,4 +106,5 @@ void armControl::shoot(){
 	QString message = QString::number(srv.response.is_successed,10);
     //显示到界面
     ui_rqtWidget.textStatus->append("shoot: " + message);
+    return;
 }
